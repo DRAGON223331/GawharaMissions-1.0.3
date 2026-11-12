@@ -1,67 +1,103 @@
-# GawharaMissions 1.0.3
+# GawharaStructures 1.0.1
 
-بلجن مهام يومية وأسبوعية مخصص لسيرفر GawharaSMP، مع مكافآت نقدية تلقائية عن طريق Vault Economy.
+بلجن Paper يضيف هياكل استكشاف وكنوز مخفية إلى عوالم GawharaSMP. الهياكل تُنشأ تلقائيًا عند توليد الشنكات الجديدة، وتحتوي على صناديق بغنائم مختلفة حسب البُعد.
+
+## العوالم المسموح بها — حماية صريحة
+
+التوليد مسموح فقط في أسماء العوالم التالية:
+
+- `world` — أطلال ومعابد وأبراج مراقبة.
+- `world_nether` — خزائن الروح ومخابئ الماجما.
+- `world_the_end` — أضرحة الفراغ ومراصد الإندر.
+
+**عالم `spawn` محظور داخل الكود نفسه**، وليس فقط من خلال `config.yml`. وأي عالم آخر لن يتولد فيه شيء. حتى أمر الإدارة اليدوي `/gstructures generate` يرفض العمل في `spawn`، ويرفض إنشاء هيكل من بُعد غير مناسب.
+
+## الهياكل الموجودة
+
+| العالم | الهيكل | المحتوى |
+|---|---|---|
+| `world` | Forest Shrine | معبد غابة وصندوق نادر |
+| `world` | Ruined Watchtower | برج مراقبة مهجور وصندوق عادي |
+| `world` | Buried Ruins | أطلال حجرية وصندوق نادر |
+| `world_nether` | Soul Vault | خزنة من البلاكستون وصندوق نادر |
+| `world_nether` | Magma Cache | مخبأ بازلت وماجما وصندوق عادي |
+| `world_the_end` | Void Shrine | ضريح إند وصندوق نادر |
+| `world_the_end` | Ender Observatory | مرصد إندر وصندوق عادي |
+
+الغنائم قابلة للتعديل بالكامل من `loot-tables` في `config.yml`، وتشمل أوزان احتمالات الظهور والكميات.
 
 ## المتطلبات
-- Paper 26.3 build 170-beta (متوافق مع إصدار السيرفر الذي أرسلت سجله).
-- Java 25 (مطلوب لبيئة Paper 26.3).
-- Vault.
-- بلجن اقتصاد يوفّر Vault Economy مثل EssentialsX Economy.
 
-## المميزات
-- مهام يومية تتجدد حسب المنطقة الزمنية في `settings.timezone` (الافتراضي `Africa/Cairo`).
-- مهام أسبوعية تتجدد يوم الاثنين وفق ISO week.
-- يختار البلجن مجموعة عشوائية من المهام لكل لاعب، ويحفظ نفس المهام والتقدم بعد إعادة التشغيل.
-- واجهة GUI عبر `/missions`، مع `/missions daily` و`/missions weekly`.
-- صرف المكافأة تلقائيًا إلى اللاعب عند إكمال المهمة من خلال Vault.
-- حفظ بيانات اللاعبين في `plugins/GawharaMissions/players.yml`.
-- تعديل عدد المهام، أنواعها، الأهداف، المكافآت، الأسماء، الأوصاف، والأيقونات من `config.yml`.
+- Paper `26.3.build.170-beta` (نفس خط إصدار السيرفر المستهدف).
+- Java 25.
+- Maven 3.9+ للبناء المحلي.
+- لا يحتاج Vault أو أي بلجن إضافي.
 
-## أنواع المهام المدعومة
-- `BREAK_BLOCK`: كسر بلوكات. يدعم `material` أو `materials`.
-- `HARVEST_CROP`: حصاد محاصيل ناضجة فقط، ويُحتسب عند كسر المحصول بعد وصوله إلى مرحلة النمو الكامل.
-- `KILL_MOB`: قتل كائنات. يدعم `entity` أو `entity-category: MONSTER`.
-- `FISH`: صيد سمك باستخدام الصنارة.
-- `CRAFT_ITEM`: تصنيع عنصر.
-- `SMELT_ITEM`: استخراج العنصر المصهور من الفرن.
-- `BREED_ANIMAL`: تزاوج الحيوانات بمساعدة اللاعب.
-- `PLAY_MINUTES`: وقت اللعب بالدقائق.
+## بناء ملف JAR
 
-## الأوامر
-- `/missions` أو `/mission` أو `/tasks`: فتح قائمة المهام اليومية والأسبوعية.
-- `/missions daily`: عرض المهام اليومية فقط.
-- `/missions weekly`: عرض المهام الأسبوعية فقط.
-- `/missions reload`: إعادة تحميل الإعدادات (صلاحية `gawharamissions.admin`).
-
-## التثبيت
-1. ثبّت Vault وبلجن اقتصاد يدعم Vault.
-2. ضع `GawharaMissions-1.0.3.jar` في مجلد `plugins`.
-3. أعد تشغيل السيرفر.
-4. عدّل `plugins/GawharaMissions/config.yml` حسب رغبتك.
-5. نفّذ `/missions reload` بعد تعديل الإعدادات.
-
-## بناء JAR من السورس
-يتطلب Maven وJava 25:
+من مجلد المشروع:
 
 ```bash
-mvn clean package
+mvn -B clean package
 ```
 
-سينتج الملف في `target/GawharaMissions-1.0.3.jar`.
+الملف الناتج:
 
-يمكن أيضًا رفع المشروع إلى GitHub وتشغيل workflow الموجود في `.github/workflows/build.yml`؛ سيُرفع ملف JAR كـ Artifact.
+`target/GawharaStructures-1.0.1.jar`
 
-## ملاحظات
-- المكافآت تُصرف تلقائيًا مرة واحدة عند الوصول إلى الهدف.
-- المهام المختارة والتقدم محفوظان في `players.yml`؛ لا تمسح الملف إلا إذا أردت إعادة ضبط بيانات المهام لجميع اللاعبين.
-- المهام تُحتسب من الأحداث التي يستقبلها السيرفر؛ كسر البلوكات الملغى لا يُحتسب.
-- `PLAY_MINUTES` يزيد مرة كل 60 ثانية أثناء وجود اللاعب متصلًا.
+### بناء تلقائي عبر GitHub Actions
 
-## إصلاح توافق Paper 26.3 في الإصدار 1.0.3
-هذا الإصدار يصحح تواقيع JVM لاستدعاءات `ItemStack#setItemMeta(ItemMeta)` (ترجع `boolean`) و`HumanEntity#openInventory(Inventory)` (ترجع `InventoryView`) وفق واجهة Paper 26.3، ويستخدم التوقيع القياسي لـ Vault `Economy#depositPlayer(OfflinePlayer, double)`.
+1. أنشئ Repository جديدًا على GitHub.
+2. ارفع **محتويات هذا المشروع** إلى جذر المستودع، بما فيها مجلد `.github`.
+3. افتح تبويب **Actions**.
+4. شغّل Workflow باسم **Build GawharaStructures**.
+5. بعد نجاحه، افتح نتيجة التشغيل ونزّل Artifact باسم `GawharaStructures-1.0.1`؛ ستجد بداخله ملف JAR.
 
-ملاحظة بناء: ملف JAR المرفق جرى تجميعه محليًا مع تواقيع compile-only المطابقة للواجهات المذكورة، لكن لم يتم تشغيل Maven ضد مستودع Paper/Vault من هذه البيئة بسبب عدم توفر اتصال المستودعات. استخدم GitHub Actions المرفق لتنفيذ Maven build الرسمي على Java 25، ثم جرّب الإصدار على نسخة احتياطية من السيرفر.
+الـ Workflow يستخدم JDK 25 ويجلب Paper API المطابقة من مستودع Paper الرسمي، ثم ينفذ Maven Build حقيقيًا.
 
+## التثبيت
 
-## إصلاح توافق Paper 26.3
-هذا الإصدار `1.0.3` يبني السورس مباشرة ضد `Paper 26.3.build.170-beta` و`Java 25`. لا تستخدم JAR التجريبي من الإصدارات السابقة؛ لأن خطأ `NoSuchMethodError` السابق كان ناتجًا عن بناء غير مطابق لتواقيع Paper. بناء Maven الرسمي من هذا المشروع يعيد ترجمة استدعاءات `Player.openInventory(Inventory)` و`ItemStack.setItemMeta(ItemMeta)` وفق التواقيع الفعلية للمكتبة.
+1. ضع `GawharaStructures-1.0.1.jar` داخل `plugins/`.
+2. أعد تشغيل السيرفر بالكامل.
+3. راجع `plugins/GawharaStructures/config.yml`.
+4. خذ نسخة احتياطية قبل تجربة التوليد على عالمك الأساسي.
+
+## أوامر اللاعبين
+
+- `/gstructures locate` — يحدد أقرب هيكل مسجل في العالم الحالي.
+- `/gstructures list` — يعرض أنواع الهياكل.
+- `/gstructures help` — يعرض المساعدة.
+
+## أوامر الإدارة
+
+- `/gstructures generate <type>` — يولد هيكلًا يدويًا في الشنك الذي تقف فيه، في العالم المسموح فقط، وبعيدًا عن Spawn.
+- `/gstructures reload` — يعيد تحميل الإعدادات ويحدّث إعدادات Populator للعوالم المفتوحة.
+
+الصلاحية: `gawharastructures.admin` (افتراضيًا OP).
+
+## التوليد التلقائي
+
+- التوليد يحدث عند إنشاء الشنك لأول مرة فقط.
+- الشنكات التي سبق استكشافها لن تتغير تلقائيًا؛ استكشف مناطق غير مكتشفة لرؤية الهياكل الجديدة.
+- كل عالم له نسبة مستقلة من `chance-per-chunk`.
+- يوجد حد أدنى للمسافة عن Spawn وحد أدنى بين الهياكل.
+- التوليد يستخدم Paper `BlockPopulator` الحديث و`LimitedRegion`، ولا يعدّل العالم عبر `World` من خيط التوليد.
+
+## أهم إعدادات config.yml
+
+- `generation.enabled`: تشغيل/إيقاف التوليد التلقائي.
+- `worlds.<world>.enabled`: تفعيل العالم المحدد، مع بقاء قائمة العوالم المسموحة الصريحة في الكود.
+- `worlds.<world>.chance-per-chunk`: نسبة محاولة التوليد لكل شنك جديد.
+- `worlds.<world>.structures`: أنواع الهياكل المسموح بها في العالم.
+- `generation.min-distance-from-spawn`: المسافة الآمنة من نقطة Spawn لكل عالم.
+- `generation.min-distance-between-structures`: المسافة الدنيا بين الهياكل.
+- `generation.require-flat-ground` و`generation.max-ground-variation`: شروط الأرض المناسبة.
+- `loot.items-per-chest` و`loot-tables`: عدد العناصر ومحتويات الصناديق وأوزانها.
+
+## حدود الاختبار
+
+تم فحص ملفات المشروع وYAML وقائمة العوالم ومنع `spawn`. لم يتم تنفيذ Maven Build فعلي في بيئة إعداد هذه الحزمة؛ شغّل GitHub Actions للتأكد من نجاح الترجمة وإنتاج JAR قبل تثبيته.
+
+## الإصدار 1.0.1 — إصلاح توافق Paper 26.3
+- استبدال `Material.CHAIN` غير الموجود في Material enum الخاص بـ Paper 26.3 بـ `Material.IRON_CHAIN` في جميع مواضع الهياكل.
+- لم تتغير قائمة العوالم: `world` و`world_nether` و`world_the_end` فقط؛ ويظل `spawn` ممنوعًا.

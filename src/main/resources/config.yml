@@ -1,157 +1,228 @@
-# GawharaMissions - GawharaSMP
-# Supported types: BREAK_BLOCK, KILL_MOB, FISH, CRAFT_ITEM, SMELT_ITEM, BREED_ANIMAL, PLAY_MINUTES
-settings:
-  timezone: Africa/Cairo
-  daily-missions-per-player: 3
-  weekly-missions-per-player: 3
-  gui-title: '&8✦ &bGawhara &fMissions'
-  gui-size: 54
-  autosave-seconds: 60
-  announce-completion: false
-  disabled-worlds: [spawn, spleef]
-  ignored-game-modes: [CREATIVE, SPECTATOR]
-  sounds:
-    open: UI_TOAST_IN
-    complete: ENTITY_PLAYER_LEVELUP
-    volume: 0.8
-    pitch: 1.2
+# GawharaStructures - GawharaSMP
+# Structures are generated only in explicitly enabled worlds below.
+# The world named "spawn" is denied even if accidentally added to the whitelist.
 
-messages:
-  prefix: '&8[&bGawharaMissions&8] &r'
-  no-permission: '&cYou do not have permission.'
-  player-only: '&cThis command can only be used in-game.'
-  economy-not-found: '&cVault economy provider was not found. Missions are disabled.'
-  reloaded: '&aConfiguration reloaded.'
-  daily-header: '&b&lDAILY MISSIONS &8- &7Resets at midnight'
-  weekly-header: '&3&lWEEKLY MISSIONS &8- &7Resets every Monday'
-  progress: '&7{title} &8» &f{progress}&7/&f{target} &8| &a${reward}'
-  completed: '&aMission completed: &f{title} &7You received &a${reward}&7!'
-  broadcast-completed: '&b{player} &7completed the mission &f{title}&7!'
-  gui-empty: '&7No missions available.'
-  usage: '&eUse: /missions [daily|weekly|reload]'
+generation:
+  enabled: true
+  chance-per-chunk: 0.025 # 2.5% per newly populated chunk if no world override exists
+  require-flat-ground: true
+  max-ground-variation: 3
+  min-distance-between-structures: 180
+  blacklisted-worlds:
+    - spawn
+  min-distance-from-spawn:
+    world: 450
+    world_nether: 120
+    world_the_end: 120
 
-# Daily missions are selected randomly for each player at the start of each day.
-daily-missions-per-player-pool:
-  - id: daily_stone
-    title: '&fStone Collector'
-    description: '&7Mine 64 stone blocks.'
-    type: BREAK_BLOCK
-    target: 64
-    reward: 180.0
-    material: STONE
-    icon: STONE
-  - id: daily_zombies
-    title: '&cZombie Hunter'
-    description: '&7Defeat 12 zombies.'
-    type: KILL_MOB
-    target: 12
-    reward: 220.0
-    entity: ZOMBIE
-    icon: IRON_SWORD
-  - id: daily_fishing
-    title: '&bFisherman'
-    description: '&7Catch 5 fish.'
-    type: FISH
-    target: 5
-    reward: 200.0
-    icon: FISHING_ROD
-  - id: daily_crafting
-    title: '&eTorch Maker'
-    description: '&7Craft 32 torches.'
-    type: CRAFT_ITEM
-    target: 32
-    reward: 160.0
-    material: TORCH
-    icon: TORCH
-  - id: daily_playtime
-    title: '&aActive Player'
-    description: '&7Play for 30 minutes.'
-    type: PLAY_MINUTES
-    target: 30
-    reward: 250.0
-    icon: CLOCK
-  - id: daily_cow
-    title: '&6Animal Keeper'
-    description: '&7Breed 3 animals.'
-    type: BREED_ANIMAL
-    target: 3
-    reward: 190.0
-    icon: WHEAT
-  - id: daily_iron
-    title: '&fIron Miner'
-    description: '&7Mine 12 iron ores.'
-    type: BREAK_BLOCK
-    target: 12
-    reward: 240.0
-    materials: [IRON_ORE, DEEPSLATE_IRON_ORE]
-    icon: IRON_ORE
-  - id: daily_farmer
-    title: '&aHarvest Time'
-    description: '&7Harvest 24 fully-grown wheat crops.'
-    type: HARVEST_CROP
-    target: 24
-    reward: 210.0
-    material: WHEAT
-    icon: WHEAT
+worlds:
+  world:
+    enabled: true
+    theme: overworld
+    chance-per-chunk: 0.025
+    structures:
+      - forest_shrine
+      - ruined_watchtower
+      - buried_ruins
+  world_nether:
+    enabled: true
+    theme: nether
+    chance-per-chunk: 0.035
+    structures:
+      - soul_vault
+      - magma_cache
+  world_the_end:
+    enabled: true
+    theme: end
+    chance-per-chunk: 0.045
+    structures:
+      - void_shrine
+      - ender_observatory
+  # Any world not explicitly enabled above is disabled.
+  spawn:
+    enabled: false
+    theme: overworld
+    structures: []
+  # Any other world is also disabled unless explicitly enabled here.
 
-weekly-missions-per-player-pool:
-  - id: weekly_miner
-    title: '&bMaster Miner'
-    description: '&7Mine 800 stone blocks.'
-    type: BREAK_BLOCK
-    target: 800
-    reward: 1800.0
-    material: STONE
-    icon: DIAMOND_PICKAXE
-  - id: weekly_slayer
-    title: '&cMonster Slayer'
-    description: '&7Defeat 100 hostile mobs.'
-    type: KILL_MOB
-    target: 100
-    reward: 2200.0
-    entity-category: MONSTER
-    icon: DIAMOND_SWORD
-  - id: weekly_fisher
-    title: '&3Fishing Master'
-    description: '&7Catch 35 fish.'
-    type: FISH
-    target: 35
-    reward: 1600.0
-    icon: FISHING_ROD
-  - id: weekly_crafter
-    title: '&eMaster Crafter'
-    description: '&7Craft 256 items.'
-    type: CRAFT_ITEM
-    target: 256
-    reward: 1500.0
-    icon: CRAFTING_TABLE
-  - id: weekly_active
-    title: '&aDedicated Member'
-    description: '&7Play for 300 minutes.'
-    type: PLAY_MINUTES
-    target: 300
-    reward: 2500.0
-    icon: CLOCK
-  - id: weekly_breeder
-    title: '&6Ranch Owner'
-    description: '&7Breed 25 animals.'
-    type: BREED_ANIMAL
-    target: 25
-    reward: 1900.0
-    icon: GOLDEN_CARROT
-  - id: weekly_smelt
-    title: '&6Smelting Expert'
-    description: '&7Smelt 128 iron ingots.'
-    type: SMELT_ITEM
-    target: 128
-    reward: 1700.0
-    material: IRON_INGOT
-    icon: BLAST_FURNACE
-  - id: weekly_farmer
-    title: '&aFarming Specialist'
-    description: '&7Harvest 180 fully-grown wheat crops.'
-    type: HARVEST_CROP
-    target: 180
-    reward: 1800.0
-    material: WHEAT
-    icon: WHEAT
+structures:
+  forest_shrine:
+    enabled: true
+    display-name: '&aForest Shrine'
+    loot-table: overworld_rare
+  ruined_watchtower:
+    enabled: true
+    display-name: '&6Ruined Watchtower'
+    loot-table: overworld_common
+  buried_ruins:
+    enabled: true
+    display-name: '&7Buried Ruins'
+    loot-table: overworld_rare
+  soul_vault:
+    enabled: true
+    display-name: '&5Soul Vault'
+    loot-table: nether_rare
+  magma_cache:
+    enabled: true
+    display-name: '&cMagma Cache'
+    loot-table: nether_common
+  void_shrine:
+    enabled: true
+    display-name: '&dVoid Shrine'
+    loot-table: end_rare
+  ender_observatory:
+    enabled: true
+    display-name: '&bEnder Observatory'
+    loot-table: end_common
+
+loot:
+  items-per-chest:
+    min: 3
+    max: 5
+
+loot-tables:
+  overworld_common:
+    - material: IRON_INGOT
+      weight: 30
+      min: 2
+      max: 6
+    - material: GOLD_INGOT
+      weight: 22
+      min: 2
+      max: 5
+    - material: EMERALD
+      weight: 18
+      min: 1
+      max: 3
+    - material: EXPERIENCE_BOTTLE
+      weight: 18
+      min: 2
+      max: 5
+    - material: NAME_TAG
+      weight: 7
+      min: 1
+      max: 1
+    - material: DIAMOND
+      weight: 5
+      min: 1
+      max: 2
+  overworld_rare:
+    - material: DIAMOND
+      weight: 25
+      min: 2
+      max: 5
+    - material: EMERALD
+      weight: 24
+      min: 3
+      max: 7
+    - material: GOLDEN_APPLE
+      weight: 12
+      min: 1
+      max: 2
+    - material: ENCHANTED_GOLDEN_APPLE
+      weight: 1
+      min: 1
+      max: 1
+    - material: DIAMOND_PICKAXE
+      weight: 5
+      min: 1
+      max: 1
+    - material: EXPERIENCE_BOTTLE
+      weight: 33
+      min: 5
+      max: 12
+  nether_common:
+    - material: GOLD_INGOT
+      weight: 28
+      min: 3
+      max: 8
+    - material: QUARTZ
+      weight: 25
+      min: 4
+      max: 12
+    - material: BLAZE_ROD
+      weight: 12
+      min: 1
+      max: 3
+    - material: GLOWSTONE_DUST
+      weight: 20
+      min: 3
+      max: 8
+    - material: MAGMA_CREAM
+      weight: 15
+      min: 1
+      max: 3
+  nether_rare:
+    - material: ANCIENT_DEBRIS
+      weight: 4
+      min: 1
+      max: 2
+    - material: NETHERITE_SCRAP
+      weight: 2
+      min: 1
+      max: 1
+    - material: GOLD_INGOT
+      weight: 30
+      min: 5
+      max: 12
+    - material: CRYING_OBSIDIAN
+      weight: 24
+      min: 2
+      max: 6
+    - material: DIAMOND
+      weight: 10
+      min: 1
+      max: 3
+    - material: BLAZE_ROD
+      weight: 30
+      min: 2
+      max: 5
+  end_common:
+    - material: ENDER_PEARL
+      weight: 30
+      min: 2
+      max: 6
+    - material: CHORUS_FRUIT
+      weight: 25
+      min: 3
+      max: 8
+    - material: PURPUR_BLOCK
+      weight: 20
+      min: 4
+      max: 12
+    - material: DIAMOND
+      weight: 12
+      min: 1
+      max: 3
+    - material: EXPERIENCE_BOTTLE
+      weight: 13
+      min: 3
+      max: 8
+  end_rare:
+    - material: SHULKER_SHELL
+      weight: 8
+      min: 1
+      max: 2
+    - material: ELYTRA
+      weight: 1
+      min: 1
+      max: 1
+    - material: DIAMOND_BLOCK
+      weight: 8
+      min: 1
+      max: 2
+    - material: NETHERITE_INGOT
+      weight: 2
+      min: 1
+      max: 1
+    - material: ENDER_PEARL
+      weight: 36
+      min: 4
+      max: 12
+    - material: DIAMOND
+      weight: 45
+      min: 2
+      max: 5
+
+storage:
+  max-records: 10000
