@@ -4,9 +4,9 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.gawharasmp</groupId>
   <artifactId>gawharamissions</artifactId>
-  <version>1.0.3</version>
+  <version>1.1.0</version>
   <name>GawharaMissions</name>
-  <description>Daily and weekly missions with Vault rewards for GawharaSMP</description>
+  <description>Daily and weekly missions with GawharaCoins rewards for GawharaSMP</description>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>25</maven.compiler.release>
@@ -16,22 +16,12 @@
       <id>papermc</id>
       <url>https://repo.papermc.io/repository/maven-public/</url>
     </repository>
-    <repository>
-      <id>jitpack.io</id>
-      <url>https://jitpack.io</url>
-    </repository>
   </repositories>
   <dependencies>
     <dependency>
       <groupId>io.papermc.paper</groupId>
       <artifactId>paper-api</artifactId>
       <version>26.3.build.170-beta</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.github.MilkBowl</groupId>
-      <artifactId>VaultAPI</artifactId>
-      <version>1.7</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>

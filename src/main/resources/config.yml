@@ -1,5 +1,9 @@
 # GawharaMissions - GawharaSMP
 # Supported types: BREAK_BLOCK, KILL_MOB, FISH, CRAFT_ITEM, SMELT_ITEM, BREED_ANIMAL, PLAY_MINUTES
+coins:
+  per-mission: 1
+  # Every mission completion awards exactly this many GC.
+
 settings:
   timezone: Africa/Cairo
   daily-missions-per-player: 3
@@ -20,12 +24,11 @@ messages:
   prefix: '&8[&bGawharaMissions&8] &r'
   no-permission: '&cYou do not have permission.'
   player-only: '&cThis command can only be used in-game.'
-  economy-not-found: '&cVault economy provider was not found. Missions are disabled.'
   reloaded: '&aConfiguration reloaded.'
   daily-header: '&b&lDAILY MISSIONS &8- &7Resets at midnight'
   weekly-header: '&3&lWEEKLY MISSIONS &8- &7Resets every Monday'
-  progress: '&7{title} &8» &f{progress}&7/&f{target} &8| &a${reward}'
-  completed: '&aMission completed: &f{title} &7You received &a${reward}&7!'
+  progress: '&7{title} &8» &f{progress}&7/&f{target} &8| &e{reward}'
+  completed: '&aMission completed: &f{title} &7You received &e{reward}&7!'
   broadcast-completed: '&b{player} &7completed the mission &f{title}&7!'
   gui-empty: '&7No missions available.'
   usage: '&eUse: /missions [daily|weekly|reload]'
@@ -37,7 +40,7 @@ daily-missions-per-player-pool:
     description: '&7Mine 64 stone blocks.'
     type: BREAK_BLOCK
     target: 64
-    reward: 180.0
+    reward: 1.0
     material: STONE
     icon: STONE
   - id: daily_zombies
@@ -45,7 +48,7 @@ daily-missions-per-player-pool:
     description: '&7Defeat 12 zombies.'
     type: KILL_MOB
     target: 12
-    reward: 220.0
+    reward: 1.0
     entity: ZOMBIE
     icon: IRON_SWORD
   - id: daily_fishing
@@ -53,14 +56,14 @@ daily-missions-per-player-pool:
     description: '&7Catch 5 fish.'
     type: FISH
     target: 5
-    reward: 200.0
+    reward: 1.0
     icon: FISHING_ROD
   - id: daily_crafting
     title: '&eTorch Maker'
     description: '&7Craft 32 torches.'
     type: CRAFT_ITEM
     target: 32
-    reward: 160.0
+    reward: 1.0
     material: TORCH
     icon: TORCH
   - id: daily_playtime
@@ -68,21 +71,21 @@ daily-missions-per-player-pool:
     description: '&7Play for 30 minutes.'
     type: PLAY_MINUTES
     target: 30
-    reward: 250.0
+    reward: 1.0
     icon: CLOCK
   - id: daily_cow
     title: '&6Animal Keeper'
     description: '&7Breed 3 animals.'
     type: BREED_ANIMAL
     target: 3
-    reward: 190.0
+    reward: 1.0
     icon: WHEAT
   - id: daily_iron
     title: '&fIron Miner'
     description: '&7Mine 12 iron ores.'
     type: BREAK_BLOCK
     target: 12
-    reward: 240.0
+    reward: 1.0
     materials: [IRON_ORE, DEEPSLATE_IRON_ORE]
     icon: IRON_ORE
   - id: daily_farmer
@@ -90,7 +93,7 @@ daily-missions-per-player-pool:
     description: '&7Harvest 24 fully-grown wheat crops.'
     type: HARVEST_CROP
     target: 24
-    reward: 210.0
+    reward: 1.0
     material: WHEAT
     icon: WHEAT
 
@@ -100,7 +103,7 @@ weekly-missions-per-player-pool:
     description: '&7Mine 800 stone blocks.'
     type: BREAK_BLOCK
     target: 800
-    reward: 1800.0
+    reward: 1.0
     material: STONE
     icon: DIAMOND_PICKAXE
   - id: weekly_slayer
@@ -108,7 +111,7 @@ weekly-missions-per-player-pool:
     description: '&7Defeat 100 hostile mobs.'
     type: KILL_MOB
     target: 100
-    reward: 2200.0
+    reward: 1.0
     entity-category: MONSTER
     icon: DIAMOND_SWORD
   - id: weekly_fisher
@@ -116,35 +119,35 @@ weekly-missions-per-player-pool:
     description: '&7Catch 35 fish.'
     type: FISH
     target: 35
-    reward: 1600.0
+    reward: 1.0
     icon: FISHING_ROD
   - id: weekly_crafter
     title: '&eMaster Crafter'
     description: '&7Craft 256 items.'
     type: CRAFT_ITEM
     target: 256
-    reward: 1500.0
+    reward: 1.0
     icon: CRAFTING_TABLE
   - id: weekly_active
     title: '&aDedicated Member'
     description: '&7Play for 300 minutes.'
     type: PLAY_MINUTES
     target: 300
-    reward: 2500.0
+    reward: 1.0
     icon: CLOCK
   - id: weekly_breeder
     title: '&6Ranch Owner'
     description: '&7Breed 25 animals.'
     type: BREED_ANIMAL
     target: 25
-    reward: 1900.0
+    reward: 1.0
     icon: GOLDEN_CARROT
   - id: weekly_smelt
     title: '&6Smelting Expert'
     description: '&7Smelt 128 iron ingots.'
     type: SMELT_ITEM
     target: 128
-    reward: 1700.0
+    reward: 1.0
     material: IRON_INGOT
     icon: BLAST_FURNACE
   - id: weekly_farmer
@@ -152,6 +155,6 @@ weekly-missions-per-player-pool:
     description: '&7Harvest 180 fully-grown wheat crops.'
     type: HARVEST_CROP
     target: 180
-    reward: 1800.0
+    reward: 1.0
     material: WHEAT
     icon: WHEAT

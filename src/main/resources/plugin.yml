@@ -1,10 +1,10 @@
 name: GawharaMissions
-version: 1.0.3
+version: 1.1.0
 main: com.gawharasmp.missions.GawharaMissions
-api-version: '1.20'
+api-version: '26.3'
 authors: [GawharaSMP]
-description: Daily and weekly missions with Vault rewards.
-depend: [Vault]
+description: Daily and weekly missions with GawharaCoins rewards.
+depend: [GawharaCoins]
 commands:
   missions:
     description: Open your daily and weekly missions.

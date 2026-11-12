@@ -1,6 +1,5 @@
 package com.gawharasmp.missions;
 
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -32,7 +31,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -56,7 +54,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 
 public final class GawharaMissions extends JavaPlugin implements Listener, CommandExecutor {
-    private Economy economy;
     private File playersFile;
     private YamlConfiguration playersData;
     private BukkitTask playtimeTask;
@@ -68,11 +65,6 @@ public final class GawharaMissions extends JavaPlugin implements Listener, Comma
     @Override
     public void onEnable() {
         saveDefaultConfig();
-        if (!setupEconomy()) {
-            getLogger().severe("Vault economy provider not found. GawharaMissions will be disabled.");
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
         loadPlayerData();
         updateZone();
         getServer().getPluginManager().registerEvents(this, this);
@@ -80,7 +72,7 @@ public final class GawharaMissions extends JavaPlugin implements Listener, Comma
         if (command != null) command.setExecutor(this);
         startTasks();
         for (Player player : Bukkit.getOnlinePlayers()) ensureCurrent(player.getUniqueId(), player.getName());
-        getLogger().info("GawharaMissions enabled. Vault economy hooked successfully.");
+        getLogger().info("GawharaMissions enabled. Mission rewards use GawharaCoins (1 GC each by default).");
     }
 
     @Override
@@ -90,13 +82,6 @@ public final class GawharaMissions extends JavaPlugin implements Listener, Comma
         savePlayerData();
     }
 
-    private boolean setupEconomy() {
-        if (Bukkit.getPluginManager().getPlugin("Vault") == null) return false;
-        RegisteredServiceProvider<Economy> registration = getServer().getServicesManager().getRegistration(Economy.class);
-        if (registration == null) return false;
-        economy = registration.getProvider();
-        return economy != null;
-    }
 
     private void startTasks() {
         // One progress unit is exactly one connected minute.
@@ -255,17 +240,16 @@ public final class GawharaMissions extends JavaPlugin implements Listener, Comma
     }
 
     private boolean completeMission(Player player, Mission mission, String period) {
-        if (mission.reward > 0) {
-            var response = economy.depositPlayer(player, mission.reward);
-            if (!response.transactionSuccess()) {
-                getLogger().warning("Failed to pay mission reward to " + player.getName() + ": " + response.errorMessage);
-                player.sendMessage(color("&cMission completed, but payment failed. Contact an administrator."));
-                return false;
-            }
+        long coinReward = Math.max(1L, getConfig().getLong("coins.per-mission", 1L));
+        String transactionKey = "mission:" + player.getUniqueId() + ":" + period + ":" + mission.id;
+        if (!awardCoinsOnce(player.getUniqueId(), coinReward, "Mission completed: " + mission.id, transactionKey)) {
+            getLogger().warning("Could not award " + coinReward + " GC to " + player.getName() + " for mission " + mission.id);
+            player.sendMessage(color("&cMission completed, but the GC reward could not be saved. Please contact staff."));
+            return false;
         }
         Map<String, String> vars = new HashMap<>();
         vars.put("title", plain(mission.title));
-        vars.put("reward", formatMoney(mission.reward));
+        vars.put("reward", coinReward + " GC");
         vars.put("period", period);
         send(player, "completed", vars);
         playSound(player, "complete");
@@ -275,10 +259,6 @@ public final class GawharaMissions extends JavaPlugin implements Listener, Comma
         }
         savePlayerData();
         return true;
-    }
-
-    private String formatMoney(double amount) {
-        return economy.format(amount);
     }
 
     private String plain(String text) {
@@ -304,6 +284,22 @@ public final class GawharaMissions extends JavaPlugin implements Listener, Comma
 
     private String color(String value) {
         return ChatColor.translateAlternateColorCodes('&', value == null ? "" : value);
+    }
+
+    private boolean awardCoinsOnce(UUID playerId, long amount, String reason, String transactionKey) {
+        var coins = Bukkit.getPluginManager().getPlugin("GawharaCoins");
+        if (coins == null || !coins.isEnabled()) {
+            getLogger().warning("GawharaCoins is not installed/enabled; cannot award mission GC.");
+            return false;
+        }
+        try {
+            Object result = coins.getClass().getMethod("awardCoinsOnce", UUID.class, long.class, String.class, String.class)
+                    .invoke(coins, playerId, amount, reason, transactionKey);
+            return Boolean.TRUE.equals(result);
+        } catch (ReflectiveOperationException ex) {
+            getLogger().log(java.util.logging.Level.SEVERE, "GawharaCoins API call failed", ex);
+            return false;
+        }
     }
 
     @Override
@@ -377,7 +373,7 @@ public final class GawharaMissions extends JavaPlugin implements Listener, Comma
             lore.add(" ");
             lore.add(color("&7Progress: &f" + value + "&7/&f" + mission.target));
             lore.add(progressBar(value, mission.target));
-            lore.add(color("&7Reward: &a" + formatMoney(mission.reward)));
+            lore.add(color("&7Reward: &e" + getConfig().getLong("coins.per-mission", 1L) + " GC"));
             lore.add(" ");
             lore.add(complete ? color("&a✔ Completed") : color("&eIn progress"));
             Material icon = mission.icon == null ? (complete ? Material.LIME_DYE : Material.PAPER) : mission.icon;
