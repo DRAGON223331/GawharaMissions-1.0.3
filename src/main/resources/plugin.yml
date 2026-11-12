@@ -1,18 +1,19 @@
-name: GawharaStructures
-version: 1.0.1
-main: com.gawharasmp.structures.GawharaStructures
-api-version: '26.3'
+name: GawharaMissions
+version: 1.0.3
+main: com.gawharasmp.missions.GawharaMissions
+api-version: '1.20'
 authors: [GawharaSMP]
-description: Adds custom treasure structures to selected Survival worlds.
+description: Daily and weekly missions with Vault rewards.
+depend: [Vault]
 commands:
-  gstructures:
-    description: GawharaStructures management and treasure locator
-    usage: /gstructures [help|locate|list|generate|reload]
-    aliases: [structures, gstructure]
+  missions:
+    description: Open your daily and weekly missions.
+    usage: /missions [daily|weekly|reload]
+    aliases: [mission, tasks]
 permissions:
-  gawharastructures.admin:
-    description: Manage and generate custom structures
-    default: op
-  gawharastructures.locate:
-    description: Locate the nearest recorded structure
+  gawharamissions.use:
+    description: Allows players to view and progress missions.
     default: true
+  gawharamissions.admin:
+    description: Allows reloading GawharaMissions.
+    default: op
