@@ -1,0 +1,19 @@
+name: GawharaMissions
+version: 1.0.3
+main: com.gawharasmp.missions.GawharaMissions
+api-version: '1.20'
+authors: [GawharaSMP]
+description: Daily and weekly missions with Vault rewards.
+depend: [Vault]
+commands:
+  missions:
+    description: Open your daily and weekly missions.
+    usage: /missions [daily|weekly|reload]
+    aliases: [mission, tasks]
+permissions:
+  gawharamissions.use:
+    description: Allows players to view and progress missions.
+    default: true
+  gawharamissions.admin:
+    description: Allows reloading GawharaMissions.
+    default: op
